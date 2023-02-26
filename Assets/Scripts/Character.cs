@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tactics.Interfaces
+namespace Tactics.Character
 {
     public class Character : MonoBehaviour
     {
@@ -261,6 +261,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrStr - amount, Strength - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrStr - newResource));
+
+                if(CurrStr < 0)
+                    CurrStr = 0;
                 CurrStr = newResource;
             }
             else if (type == StatType.mag)
@@ -268,6 +271,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrMag - amount, Magic - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrMag - newResource));
+
+                if (CurrMag < 0)
+                    CurrMag = 0;
                 CurrMag = newResource;
             }
             else if (type == StatType.pdef)
@@ -275,6 +281,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrPhysDef - amount, PhysDef - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrPhysDef - newResource));
+
+                if (CurrPhysDef < 0)
+                    CurrPhysDef = 0;
                 CurrPhysDef = newResource;
             }
             else if (type == StatType.mres)
@@ -282,6 +291,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrMagicRes - amount, MagicRes - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrMagicRes - newResource));
+
+                if (CurrMagicRes < 0)
+                    CurrMagicRes = 0;
                 CurrMagicRes = newResource;
             }
             else if (type == StatType.mvmt)
@@ -289,6 +301,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrMovement - amount, Movement - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrMovement - newResource));
+
+                if (CurrMovement < 0)
+                    CurrMovement = 0;
                 CurrMovement = newResource;
             }
             else if (type == StatType.jump)
@@ -296,6 +311,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrJump - amount, Jump - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrJump - newResource));
+
+                if (CurrJump < 0)
+                    CurrJump = 0;
                 CurrJump = newResource;
             }
             else if (type == StatType.spd)
@@ -303,6 +321,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrSpeed - amount, Speed - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrSpeed - newResource));
+
+                if (CurrSpeed < 0)
+                    CurrSpeed = 0;
                 CurrSpeed = newResource;
             }
             else if (type == StatType.crit)
@@ -310,6 +331,9 @@ namespace Tactics.Interfaces
                 newResource = Mathf.Max(CurrCrit - amount, Crit - _maxModifier);
                 if (Lowered != null)
                     Lowered(this, new LoweredEventArgs(CurrCrit - newResource));
+
+                if (CurrCrit < 0)
+                    CurrCrit = 0;
                 CurrCrit = newResource;
             }
         }
