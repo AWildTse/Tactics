@@ -125,9 +125,67 @@ namespace Tactics.Character
             spd,
             crit
         }
+        #region Constructors
+        public Character(int health, int maxHealth, int mana, int maxMana, int strength, int magic, int physDef, int magicRes, int movement, int jump, int speed, int crit)
+        {
+            #region Exceptions
+            //Check for health range exceptions
+            if (Health < 0) throw new ArgumentOutOfRangeException("Health");
+            if (Health > MaxHealth) throw new ArgumentOutOfRangeException("Health");
+
+            //Check for mana range exceptions
+            if (Mana < 0) throw new ArgumentOutOfRangeException("Mana");
+            if (Mana > MaxMana) throw new ArgumentOutOfRangeException("Mana");
+
+            //Check for strength range exceptions
+            if (Strength < 0) throw new ArgumentOutOfRangeException("Strength");
+
+            //Check for magic range exceptions
+            if (Magic < 0) throw new ArgumentOutOfRangeException("Magic");
+
+            //Check for physical defense range exceptions
+            if (PhysDef < 0) throw new ArgumentOutOfRangeException("PhysDef");
+
+            //Check for magical resistance range rexceptions
+            if (MagicRes < 0) throw new ArgumentOutOfRangeException("MagicRes");
+
+            //Check for movement range exceptions
+            if (Movement < 0) throw new ArgumentOutOfRangeException("Movement");
+
+            //Check for jump range exceptions
+            if (Jump < 0) throw new ArgumentOutOfRangeException("Jump");
+
+            //Check for speed range exceptions
+            if (Speed < 0) throw new ArgumentOutOfRangeException("Speed");
+
+            //Check for crit range exceptions
+            if (Crit < 0) throw new ArgumentOutOfRangeException("Crit");
+            #endregion
+
+            #region Setters
+            Health = health;
+            MaxHealth = maxHealth;
+            Mana = mana;
+            MaxMana = maxMana;
+            Strength = strength;
+            Magic = magic;
+            PhysDef = physDef;
+            MagicRes = magicRes;
+            Movement = movement;
+            Jump = jump;
+            Speed = speed;
+            Crit = crit;
+            #endregion
+        }
+
+        public Character()
+        {
+
+        }
+        #endregion
 
         #region EventHandlers
-        public event EventHandler<RestoredEventArgs> Healed;
+        public event EventHandler<RestoredEventArgs> Restored;
         public event EventHandler<DamagedEventArgs> Damaged;
         public event EventHandler<RaisedEventArgs> Raised;
         public event EventHandler<LoweredEventArgs> Lowered;
@@ -145,15 +203,15 @@ namespace Tactics.Character
             if (type == StatType.hp)
             {
                 newResource = Mathf.Min(Health + amount, MaxHealth);
-                if (Healed != null)
-                    Healed(this, new RestoredEventArgs(newResource - Health));
+                if (Restored != null)
+                    Restored(this, new RestoredEventArgs(newResource - Health));
                 Health = newResource;
             }
             else if (type == StatType.mp)
             {
                 newResource = Mathf.Min(Mana + amount, MaxMana);
-                if (Healed != null)
-                    Healed(this, new RestoredEventArgs(newResource - Mana));
+                if (Restored != null)
+                    Restored(this, new RestoredEventArgs(newResource - Mana));
                 Mana = newResource;
             }
         }
