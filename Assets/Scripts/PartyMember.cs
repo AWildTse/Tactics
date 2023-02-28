@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tactics.Character
 {
-    public class PartyMember : Character
+    public class PartyMember : CharacterAsset
     {
 
     }

@@ -1,18 +1,33 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using Tactics.Ability;
+using Tactics.Class;
+using Tactics.Skills;
 
 namespace Tactics.Character
 {
-    public class Character : MonoBehaviour
+    [CreateAssetMenu(fileName = "New Character", menuName = "ScriptableObjects/Characters")]
+
+    public class CharacterAsset : ScriptableObject
     {
-        #region Character Stat Properties
+        [SerializeField] public string FirstName;
+        [SerializeField] public string LastName;
+
+        [SerializeField] private List<ClassAsset> _characterAvailableClasses;
+        private List<SkillAsset> _characterAvailableSkills;
         
+        //Inventory
+        //Equipped Items
+
+        #region Character Stat Properties
+
         #region Health & Mana
         /// <summary>
         /// A character's current Health
         /// </summary>
-        public int Health { get; set; }
+        [SerializeField] public int Health { get; set; }
         /// <summary>
         /// The maximum Health a character can have
         /// </summary>
@@ -83,13 +98,13 @@ namespace Tactics.Character
         /// </summary>
         public int CurrJump { get; set; }
         /// <summary>
-        /// Speed determines a character's turn order in the line up.
+        /// Dex determines a character's speed, accuracy, and evasion
         /// </summary>
-        public int Speed { get; set; }
+        public int Dexterity { get; set; }
         /// <summary>
-        /// This is the Speed + any stat modifiers
+        /// This is the Dexterity + any stat modifiers
         /// </summary>
-        public int CurrSpeed { get; set; }
+        public int CurrDexterity { get; set; }
         #endregion
 
         #region Misc
@@ -101,6 +116,30 @@ namespace Tactics.Character
         /// This is the Critical Chance + any stat modifiers
         /// </summary>
         public int CurrCrit { get; set; }
+        /// <summary>
+        /// Accuracy determines the chance of landing a blow
+        /// </summary>
+        public int Accuracy { get; set; }
+        /// <summary>
+        /// This is the Accuracy + any stat modifiers
+        /// </summary>
+        public int CurrAccuracy { get; set; }
+        /// <summary>
+        /// Evasion determines the chance of dodging
+        /// </summary>
+        public int Evasion { get; set; }
+        /// <summary>
+        /// This is the Evasion + any stat modifiers
+        /// </summary>
+        public int CurrEvasion { get; set; }
+        /// <summary>
+        /// Spellcasting Speed determines how fast a spell is cast
+        /// </summary>
+        public int SpellcSpd { get; set; }
+        /// <summary>
+        /// This is the Spellcasting Speed + any stat modifiers
+        /// </summary>
+        public int CurrSpellcSpd { get; set; }
         #endregion
 
         /// <summary>
@@ -118,15 +157,18 @@ namespace Tactics.Character
             mp,
             str,
             mag,
-            pdef,
-            mres,
-            mvmt,
-            jump,
-            spd,
-            crit
+            def,
+            res,
+            dex,
+            cri,
+            acc,
+            mvt,
+            jmp,
+            eva,
+            spc
         }
         #region Constructors
-        public Character(int health, int maxHealth, int mana, int maxMana, int strength, int magic, int physDef, int magicRes, int movement, int jump, int speed, int crit)
+        public CharacterAsset(int health, int maxHealth, int mana, int maxMana, int strength, int magic, int physDef, int magicRes, int dexterity, int crit, int accuracy, int evasion, int movement, int jump, int spellcastingSpeed)
         {
             #region Exceptions
             //Check for health range exceptions
@@ -149,17 +191,23 @@ namespace Tactics.Character
             //Check for magical resistance range rexceptions
             if (MagicRes < 0) throw new ArgumentOutOfRangeException("MagicRes");
 
+            //Check for speed range exceptions
+            if (Dexterity < 0) throw new ArgumentOutOfRangeException("Speed");
+
+            //Check for crit range exceptions
+            if (Crit < 0) throw new ArgumentOutOfRangeException("Crit");
+
+            //Check for accuracy range exceptions
+            if (Accuracy < 0) throw new ArgumentOutOfRangeException("Accuracy");
+
             //Check for movement range exceptions
             if (Movement < 0) throw new ArgumentOutOfRangeException("Movement");
 
             //Check for jump range exceptions
             if (Jump < 0) throw new ArgumentOutOfRangeException("Jump");
 
-            //Check for speed range exceptions
-            if (Speed < 0) throw new ArgumentOutOfRangeException("Speed");
-
-            //Check for crit range exceptions
-            if (Crit < 0) throw new ArgumentOutOfRangeException("Crit");
+            //Check for spellcasting speed range exceptions
+            if (SpellcSpd < 0) throw new ArgumentOutOfRangeException("SpellcSpd");
             #endregion
 
             #region Setters
@@ -171,14 +219,17 @@ namespace Tactics.Character
             Magic = magic;
             PhysDef = physDef;
             MagicRes = magicRes;
+            Dexterity = dexterity;
+            Crit = crit;
+            Accuracy = accuracy;
+            Evasion = evasion;
             Movement = movement;
             Jump = jump;
-            Speed = speed;
-            Crit = crit;
+            SpellcSpd = spellcastingSpeed;
             #endregion
         }
 
-        public Character()
+        public CharacterAsset()
         {
 
         }
@@ -262,47 +313,68 @@ namespace Tactics.Character
                     Raised(this, new RaisedEventArgs(newResource + CurrMag));
                 CurrMag = newResource;
             }
-            else if(type == StatType.pdef)
+            else if(type == StatType.def)
             {
                 newResource = Mathf.Max(CurrPhysDef + amount, PhysDef + _maxModifier);
                 if (Raised != null)
                     Raised(this, new RaisedEventArgs(newResource + CurrPhysDef));
                 CurrPhysDef = newResource;
             }
-            else if(type == StatType.mres)
+            else if(type == StatType.res)
             {
                 newResource = Mathf.Max(CurrMagicRes + amount, MagicRes + _maxModifier);
                 if (Raised != null)
                     Raised(this, new RaisedEventArgs(newResource + CurrMagicRes));
                 CurrMagicRes = newResource;
             }
-            else if (type == StatType.mvmt)
+            else if (type == StatType.dex)
+            {
+                newResource = Mathf.Max(CurrDexterity + amount, Dexterity + _maxModifier);
+                if (Raised != null)
+                    Raised(this, new RaisedEventArgs(newResource + CurrDexterity));
+                CurrDexterity = newResource;
+            }
+            else if (type == StatType.cri)
+            {
+                newResource = Mathf.Max(CurrCrit + amount, Crit + _maxModifier);
+                if (Raised != null)
+                    Raised(this, new RaisedEventArgs(newResource + CurrCrit));
+                CurrCrit = newResource;
+            }
+            else if(type == StatType.acc)
+            {
+                newResource = Mathf.Max(CurrAccuracy + amount, Accuracy + _maxModifier);
+                if (Raised != null)
+                    Raised(this, new RaisedEventArgs(newResource + CurrAccuracy));
+                CurrAccuracy = newResource;
+            }
+            else if (type == StatType.eva)
+            {
+                newResource = Mathf.Max(CurrEvasion + amount, Evasion + _maxModifier);
+                if (Raised != null)
+                    Raised(this, new RaisedEventArgs(newResource + CurrEvasion));
+                CurrEvasion = newResource;
+            }
+            else if (type == StatType.mvt)
             {
                 newResource = Mathf.Max(CurrMovement + amount, Movement + _maxModifier);
                 if (Raised != null)
                     Raised(this, new RaisedEventArgs(newResource + CurrMovement));
                 CurrMovement = newResource;
             }
-            else if(type == StatType.jump)
+            else if(type == StatType.jmp)
             {
                 newResource = Mathf.Max(CurrJump + amount, Jump + _maxModifier);
                 if (Raised != null)
                     Raised(this, new RaisedEventArgs(newResource + CurrJump));
                 CurrJump = newResource;
-            }
-            else if (type == StatType.spd)
+            }         
+            else if (type == StatType.spc)
             {
-                newResource = Mathf.Max(CurrSpeed + amount, Speed + _maxModifier);
+                newResource = Mathf.Max(CurrSpellcSpd + amount, SpellcSpd + _maxModifier);
                 if (Raised != null)
-                    Raised(this, new RaisedEventArgs(newResource + CurrSpeed));
-                CurrSpeed = newResource;
-            }
-            else if (type == StatType.crit)
-            {
-                newResource = Mathf.Max(CurrCrit + amount, Crit + _maxModifier);
-                if (Raised != null)
-                    Raised(this, new RaisedEventArgs(newResource + CurrCrit));
-                CurrCrit = newResource;
+                    Raised(this, new RaisedEventArgs(newResource + CurrSpellcSpd));
+                CurrSpellcSpd = newResource;
             }
         }
 
@@ -334,7 +406,7 @@ namespace Tactics.Character
                     CurrMag = 0;
                 CurrMag = newResource;
             }
-            else if (type == StatType.pdef)
+            else if (type == StatType.def)
             {
                 newResource = Mathf.Max(CurrPhysDef - amount, PhysDef - _maxModifier);
                 if (Lowered != null)
@@ -344,7 +416,7 @@ namespace Tactics.Character
                     CurrPhysDef = 0;
                 CurrPhysDef = newResource;
             }
-            else if (type == StatType.mres)
+            else if (type == StatType.res)
             {
                 newResource = Mathf.Max(CurrMagicRes - amount, MagicRes - _maxModifier);
                 if (Lowered != null)
@@ -354,7 +426,47 @@ namespace Tactics.Character
                     CurrMagicRes = 0;
                 CurrMagicRes = newResource;
             }
-            else if (type == StatType.mvmt)
+            else if (type == StatType.dex)
+            {
+                newResource = Mathf.Max(CurrDexterity - amount, Dexterity - _maxModifier);
+                if (Lowered != null)
+                    Lowered(this, new LoweredEventArgs(CurrDexterity - newResource));
+
+                if (CurrDexterity < 0)
+                    CurrDexterity = 0;
+                CurrDexterity = newResource;
+            }
+            else if (type == StatType.cri)
+            {
+                newResource = Mathf.Max(CurrCrit - amount, Crit - _maxModifier);
+                if (Lowered != null)
+                    Lowered(this, new LoweredEventArgs(CurrCrit - newResource));
+
+                if (CurrCrit < 0)
+                    CurrCrit = 0;
+                CurrCrit = newResource;
+            }
+            else if (type == StatType.acc)
+            {
+                newResource = Mathf.Max(CurrAccuracy - amount, Accuracy - _maxModifier);
+                if (Lowered != null)
+                    Lowered(this, new LoweredEventArgs(CurrAccuracy - newResource));
+
+                if (CurrAccuracy < 0)
+                    CurrAccuracy = 0;
+                CurrAccuracy = newResource;
+            }
+            else if (type == StatType.eva)
+            {
+                newResource = Mathf.Max(CurrEvasion - amount, Evasion - _maxModifier);
+                if (Lowered != null)
+                    Lowered(this, new LoweredEventArgs(CurrEvasion - newResource));
+
+                if (CurrEvasion < 0)
+                    CurrEvasion = 0;
+                CurrEvasion = newResource;
+            }
+            else if (type == StatType.mvt)
             {
                 newResource = Mathf.Max(CurrMovement - amount, Movement - _maxModifier);
                 if (Lowered != null)
@@ -364,7 +476,7 @@ namespace Tactics.Character
                     CurrMovement = 0;
                 CurrMovement = newResource;
             }
-            else if (type == StatType.jump)
+            else if (type == StatType.jmp)
             {
                 newResource = Mathf.Max(CurrJump - amount, Jump - _maxModifier);
                 if (Lowered != null)
@@ -374,25 +486,16 @@ namespace Tactics.Character
                     CurrJump = 0;
                 CurrJump = newResource;
             }
-            else if (type == StatType.spd)
-            {
-                newResource = Mathf.Max(CurrSpeed - amount, Speed - _maxModifier);
-                if (Lowered != null)
-                    Lowered(this, new LoweredEventArgs(CurrSpeed - newResource));
 
-                if (CurrSpeed < 0)
-                    CurrSpeed = 0;
-                CurrSpeed = newResource;
-            }
-            else if (type == StatType.crit)
+            else if (type == StatType.spc)
             {
-                newResource = Mathf.Max(CurrCrit - amount, Crit - _maxModifier);
+                newResource = Mathf.Max(CurrSpellcSpd - amount, SpellcSpd - _maxModifier);
                 if (Lowered != null)
-                    Lowered(this, new LoweredEventArgs(CurrCrit - newResource));
+                    Lowered(this, new LoweredEventArgs(CurrSpellcSpd - newResource));
 
-                if (CurrCrit < 0)
-                    CurrCrit = 0;
-                CurrCrit = newResource;
+                if (CurrSpellcSpd < 0)
+                    CurrSpellcSpd = 0;
+                CurrSpellcSpd = newResource;
             }
         }
         #endregion

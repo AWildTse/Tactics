@@ -13,12 +13,12 @@ namespace Editor
     {
         public class HealthProperty
         {
-            private Character character;
+            private CharacterAsset character;
 
             [SetUp]
             public void Before_Every_Test()
             {
-                character = new Character();
+                character = new CharacterAsset();
                 character.Health = 0;
                 character.MaxHealth = 1;
             }
@@ -26,7 +26,7 @@ namespace Editor
             [Test]
             public void _0_Does_Nothing()
             {
-                character.Restore(0, Character.StatType.hp);
+                character.Restore(0, CharacterAsset.StatType.hp);
 
                 Assert.AreEqual(0, character.Health);
             }
@@ -34,7 +34,7 @@ namespace Editor
             [Test]
             public void _1_Increments_Current_Health()
             {
-                character.Restore(1, Character.StatType.hp);
+                character.Restore(1, CharacterAsset.StatType.hp);
 
                 Assert.AreEqual(1, character.Health);
             }
@@ -42,7 +42,7 @@ namespace Editor
             [Test]
             public void Over_Restoring_Is_Ignored()
             {
-                character.Restore(2, Character.StatType.hp);
+                character.Restore(2, CharacterAsset.StatType.hp);
 
                 Assert.AreEqual(1, character.Health);
             }
@@ -50,12 +50,12 @@ namespace Editor
 
         public class ManaProperty
         {
-            private Character character;
+            private CharacterAsset character;
 
             [SetUp]
             public void Before_Every_Test()
             {
-                character = new Character();
+                character = new CharacterAsset();
                 character.Mana = 0;
                 character.MaxMana = 1;
             }
@@ -63,7 +63,7 @@ namespace Editor
             [Test]
             public void _0_Does_Nothing()
             {
-                character.Restore(0, Character.StatType.mp);
+                character.Restore(0, CharacterAsset.StatType.mp);
 
                 Assert.AreEqual(0, character.Mana);
             }
@@ -71,7 +71,7 @@ namespace Editor
             [Test]
             public void _1_Increments_Current_Health()
             {
-                character.Restore(1, Character.StatType.mp);
+                character.Restore(1, CharacterAsset.StatType.mp);
 
                 Assert.AreEqual(1, character.Mana);
             }
@@ -79,7 +79,7 @@ namespace Editor
             [Test]
             public void Overheating_Is_Ignored()
             {
-                character.Restore(2, Character.StatType.mp);
+                character.Restore(2, CharacterAsset.StatType.mp);
 
                 Assert.AreEqual(1, character.Mana);
             }
@@ -87,11 +87,11 @@ namespace Editor
 
         public class TheHealedEvent
         {
-            private Character character;
+            private CharacterAsset character;
             [SetUp]
             public void Before_Every_Test()
             {
-                character = new Character();
+                character = new CharacterAsset();
                 character.Health = 1;
                 character.MaxHealth = 1;
             }
@@ -106,7 +106,7 @@ namespace Editor
                     amount = args.Amount;
                 };
 
-                character.Restore(0, Character.StatType.hp);
+                character.Restore(0, CharacterAsset.StatType.hp);
 
                 Assert.AreEqual(0, amount);
             }
@@ -121,14 +121,57 @@ namespace Editor
                     amount = args.Amount;
                 };
 
-                character.Restore(1, Character.StatType.hp);
+                character.Restore(1, CharacterAsset.StatType.hp);
 
                 Assert.AreEqual(0, amount);
             }
         }
-        public class StrengthProperty
-        {
 
+        public class TheDamagedEvent
+        {
+            private CharacterAsset character;
+            [SetUp]
+            public void Before_Every_Test()
+            {
+                character = new CharacterAsset();
+            }
+
+            [Test]
+            public void Raises_Event_On_Hit()
+            {
+                var amount = -1f;
+
+                character.Health = 1;
+
+                character.Damaged += (sender, args) =>
+                {
+                    amount = args.Amount;
+                };
+
+                character.Damage(0, CharacterAsset.StatType.hp);
+
+                Assert.AreEqual(0, amount);
+            }
+
+            [Test]
+            public void Overkill_Is_Ignored()
+            {
+                var amount = -1f;
+
+                character.Health = 0;
+                character.Damaged += (sender, args) =>
+                {
+                    amount = args.Amount;
+                };
+
+                character.Damage(1, CharacterAsset.StatType.hp);
+
+                Assert.AreEqual(0, amount);
+            }
         }
+    }
+    public class StrengthProperty
+    {
+
     }
 }
