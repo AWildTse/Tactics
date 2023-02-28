@@ -12,41 +12,142 @@ namespace Tactics.Character
 
     public class CharacterAsset : ScriptableObject
     {
-        [SerializeField] public string FirstName;
-        [SerializeField] public string LastName;
+        #region Character Description
+        [Tooltip("This character's first name.")]
+        [SerializeField] private string _firstName;
+        /// <summary>
+        /// This character's first name
+        /// </summary>
+        public string FirstName 
+        { 
+            get => _firstName; 
+        }
 
-        [SerializeField] private List<ClassAsset> _characterAvailableClasses;
-        private List<SkillAsset> _characterAvailableSkills;
-        
+        [Tooltip("This character's last name.")]
+        [SerializeField] private string _lastName;
+        /// <summary>
+        /// This character's last name
+        /// </summary>
+        public string LastName 
+        { 
+            get => _lastName; 
+        }
+
+        [Tooltip("This character's level.")]
+        [SerializeField] private string _level;
+        /// <summary>
+        /// This character's level
+        /// </summary>
+        public string Level 
+        { 
+            get => _level; 
+            set => _level = value; 
+        }
+
+        [Tooltip("This character's class.")]
+        [SerializeField] private ClassAsset _class;
+        /// <summary>
+        /// This character's class
+        /// </summary>
+        public ClassAsset Class
+        {
+            get => _class;
+            set => _class = value;
+        }
+
+        [Tooltip("This character's available classes")]
+        [SerializeField] private List<ClassAsset> _availableClasses;
+        /// <summary>
+        /// This character's available classes
+        /// </summary>
+        public List<ClassAsset> AvailableClasses 
+        { 
+            get => _availableClasses;
+            set => _availableClasses = value;
+        }
+
+        [Tooltip("This character's available skills")]
+        [SerializeField] private List<SkillAsset> _availableSkills;
+        /// <summary>
+        /// This character's available skills
+        /// </summary>
+        public List<SkillAsset> AvailableSkills
+        {
+            get => _availableSkills;
+            set => _availableSkills = value;
+        }
+        #endregion
+
         //Inventory
         //Equipped Items
 
         #region Character Stat Properties
+        #region Private Variables
+        [Tooltip("This character's maximum health. At 0, this character is knocked out")]
+        [SerializeField] private int _maxHealth;
+        [Tooltip("This character's maximum mana. Resource required to use skills/cast spells.")]
+        [SerializeField] private int _maxMana;
+        [Tooltip("This character's strength stat. Strength determines how much physical damage the character does.")]
+        [SerializeField] private int _strength;
+        [Tooltip("This character's magic stat. Magic determines how much magical damage the character does.")]
+        [SerializeField] private int _magic;
+        [Tooltip("This character's physical defense stat. Physical Resistance determines how much physical damage is mitigated.")]
+        [SerializeField] private int _physicalDefense;
+        [Tooltip("This character's magical resistance stat. Magical Resistance determines how much magical damage is mitigated.")]
+        [SerializeField] private int _magicResistance;
+        [Tooltip("This character's dexterity stat. Dexterity determines a character's speed, accuracy, and evasion")]
+        [SerializeField] private int _dexterity;
+        [Tooltip("This character's critical chance stat. Critical Chance determines the chance of the player's physical or magical attack dealing double damage.")]
+        [SerializeField] private int _criticalChance;
+        [Tooltip("This character's accuracy stat. Accuracy determines the chance of landing a blow.")]
+        [SerializeField] private int _accuracy;
+        [Tooltip("This character's evasion stat. Evasion determines the chance of dodging.")]
+        [SerializeField] private int _evasion;
+        [Tooltip("This character's movement stat. Movement determines how many places a character can move.")]
+        [SerializeField] private int _movement;
+        [Tooltip("This character's jump stat. Jump determines how high a character can jump to reach a new place. (Requires one Movement)")]
+        [SerializeField] private int _jump;
+        [Tooltip("This character's spellcasting speed stat. Spellcasting Speed determines how fast a spell is cast.")]
+        [SerializeField] private int _spellcastingSpeed;
+
+        #endregion
 
         #region Health & Mana
         /// <summary>
-        /// A character's current Health
+        /// A character's current Health. At 0, this character is knocked out
         /// </summary>
-        [SerializeField] public int Health { get; set; }
+        public int Health { get; set; }
         /// <summary>
         /// The maximum Health a character can have
         /// </summary>
-        public int MaxHealth { get; set; }
+        public int MaxHealth
+        {
+            get => _maxHealth;
+            set => _maxHealth = value;
+        }
         /// <summary>
-        /// A character's current Mana
+        /// A character's current Mana. Resource required to use skills/cast spells.
         /// </summary>
         public int Mana { get; set; }
         /// <summary>
         /// The maximum Mana a character can have
         /// </summary>
-        public int MaxMana { get; set; }
+        public int MaxMana
+        {
+            get => _maxMana;
+            set => _maxMana = value;
+        }
         #endregion
 
         #region Strength & Magic
         /// <summary>
         /// Strength determines how much physical damage the character does.
         /// </summary>
-        public int Strength { get; set; }
+        public int Strength
+        {
+            get => _strength;
+            set => _strength = value;
+        }
         /// <summary>
         /// This is the Strength + any stat modifiers
         /// </summary>
@@ -54,7 +155,11 @@ namespace Tactics.Character
         /// <summary>
         /// Magic determines how much magical damage the character does
         /// </summary>
-        public int Magic { get; set; }
+        public int Magic
+        {
+            get => _magic;
+            set => _magic = value;
+        }
         /// <summary>
         /// This is the Magic + any stat modifiers
         /// </summary>
@@ -63,17 +168,25 @@ namespace Tactics.Character
 
         #region Resistances
         /// <summary>
-        /// Physical Resistance determines how much physical damage is mitigated
+        /// Physical Defense determines how much physical damage is mitigated
         /// </summary>
-        public int PhysDef { get; set; }
+        public int PhysDef
+        {
+            get => _physicalDefense;
+            set => _physicalDefense = value;
+        }
         /// <summary>
-        /// This is the Physical Resistance + any stat modifiers
+        /// This is the Physical Defense + any stat modifiers
         /// </summary>
         public int CurrPhysDef { get; set; }
         /// <summary>
         /// Magical Resistance determines how much magical damage is mitigated
         /// </summary>
-        public int MagicRes { get; set; }
+        public int MagicRes
+        {
+            get => _magicResistance;
+            set => _magicResistance = value;
+        }
         /// <summary>
         /// This is the Magical Resistance + any stat modifiers
         /// </summary>
@@ -84,7 +197,11 @@ namespace Tactics.Character
         /// <summary>
         /// Movement determines how many places a character can move
         /// </summary>
-        public int Movement { get; set; }
+        public int Movement
+        {
+            get => _movement;
+            set => _movement = value;
+        }
         /// <summary>
         /// This is the Movement + any stat modifiers
         /// </summary>
@@ -92,7 +209,11 @@ namespace Tactics.Character
         /// <summary>
         /// Jump determines how high a character can jump to reach a new place. (Requires one Movement)
         /// </summary>
-        public int Jump { get; set; }
+        public int Jump
+        {
+            get => _jump;
+            set => _jump = value;
+        }
         /// <summary>
         /// This is the Jump + any stat modifiers
         /// </summary>
@@ -100,7 +221,11 @@ namespace Tactics.Character
         /// <summary>
         /// Dex determines a character's speed, accuracy, and evasion
         /// </summary>
-        public int Dexterity { get; set; }
+        public int Dexterity
+        {
+            get => _dexterity;
+            set => _dexterity = value;
+        }
         /// <summary>
         /// This is the Dexterity + any stat modifiers
         /// </summary>
@@ -111,7 +236,11 @@ namespace Tactics.Character
         /// <summary>
         /// Critical Chance determines the chance of the player's physical or magical attack dealing double damage
         /// </summary>
-        public int Crit { get; set; }
+        public int Crit
+        {
+            get => _criticalChance;
+            set => _criticalChance = value;
+        }
         /// <summary>
         /// This is the Critical Chance + any stat modifiers
         /// </summary>
@@ -119,7 +248,11 @@ namespace Tactics.Character
         /// <summary>
         /// Accuracy determines the chance of landing a blow
         /// </summary>
-        public int Accuracy { get; set; }
+        public int Accuracy
+        {
+            get => _accuracy;
+            set => _accuracy = value;
+        }
         /// <summary>
         /// This is the Accuracy + any stat modifiers
         /// </summary>
@@ -127,7 +260,12 @@ namespace Tactics.Character
         /// <summary>
         /// Evasion determines the chance of dodging
         /// </summary>
-        public int Evasion { get; set; }
+        public int Evasion
+        {
+            get => _evasion;
+            set => _evasion = value;
+        }
+
         /// <summary>
         /// This is the Evasion + any stat modifiers
         /// </summary>
@@ -135,7 +273,11 @@ namespace Tactics.Character
         /// <summary>
         /// Spellcasting Speed determines how fast a spell is cast
         /// </summary>
-        public int SpellcSpd { get; set; }
+        public int SpellcSpd
+        {
+            get => _spellcastingSpeed;
+            set => _spellcastingSpeed = value;
+        }
         /// <summary>
         /// This is the Spellcasting Speed + any stat modifiers
         /// </summary>
@@ -145,7 +287,7 @@ namespace Tactics.Character
         /// <summary>
         /// This is how much a stat can be modified with abilities/skills during battle
         /// </summary>
-        private const int _maxModifier = 6;
+        [SerializeField] private const int _maxModifier = 6;
         #endregion
 
         /// <summary>
@@ -162,11 +304,12 @@ namespace Tactics.Character
             dex,
             cri,
             acc,
+            eva,
             mvt,
             jmp,
-            eva,
             spc
         }
+
         #region Constructors
         public CharacterAsset(int health, int maxHealth, int mana, int maxMana, int strength, int magic, int physDef, int magicRes, int dexterity, int crit, int accuracy, int evasion, int movement, int jump, int spellcastingSpeed)
         {
