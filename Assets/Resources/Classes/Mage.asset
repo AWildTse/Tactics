@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d125ef3fe0cd64db844470299b93f4, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: 
-  _className: 
-  _ability: {fileID: 0}
-  _listOfClassSkills: []
+  _className: Mage
+  _ability: {fileID: 11400000, guid: e65f2ccebff486c41afe771e68033a23, type: 2}
+  _listOfClassSkills:
+  - {fileID: 11400000, guid: 05ed74b270b49b64db30da70fdeda6ef, type: 2}
   _healthModifier: 0
   _manaModifier: 0
   _strengthModifier: 0
-  _magicModifier: 0
+  _magicModifier: 1
   _physicalDefenseModifier: 0
   _magicResistanceModifier: 0
   _dexterityModifier: 0

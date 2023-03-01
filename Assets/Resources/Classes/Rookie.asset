@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d125ef3fe0cd64db844470299b93f4, type: 3}
   m_Name: Rookie
   m_EditorClassIdentifier: 
-  _className: 
+  _className: Rookie
   _ability: {fileID: 0}
-  _listOfClassSkills: []
+  _listOfClassSkills:
+  - {fileID: 11400000, guid: 06ca3a7dc841b1846a74d07efb73333e, type: 2}
   _healthModifier: 0
   _manaModifier: 0
   _strengthModifier: 0

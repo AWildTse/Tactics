@@ -10,15 +10,25 @@ namespace Tactics.Class
     public class ClassAsset : ScriptableObject
     {
         #region Private Variables
+
+        #region Class Variables
         [Tooltip("This class' name.")]
         [SerializeField] private string _className;
 
         [Tooltip("This class' ability.")]
         [SerializeField] private AbilityAsset _ability;
 
+        [Tooltip("This class' level.")]
+        [SerializeField] private int _classLevel;
+
+        [Tooltip("This amount of experience in this class' level.")]
+        [SerializeField] private int _classExperience;
+
         [Tooltip("This class' list of skills.")]
         [SerializeField] private List<SkillAsset> _listOfClassSkills;
+        #endregion
 
+        #region Class Modifiers
         [Tooltip("This class' health modifier.")]
         [SerializeField] private int _healthModifier;
 
@@ -68,6 +78,10 @@ namespace Tactics.Class
         [Tooltip("This class' magic modifier.")]
         [Range(-6, 6)]
         [SerializeField] private int _spellcastingSpeedModifier;
+        #endregion
+
+        #region Class Resistances
+        #endregion
         #endregion
 
         #region Class Properties

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17988ee33a60c0947b6fe7d111ec4241, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: 
-  _abilityName: 
-  _abilityDescription: 
+  _abilityName: Spelllslinger
+  _abilityDescription: Mages cast spells faster

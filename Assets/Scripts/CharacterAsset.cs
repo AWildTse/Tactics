@@ -34,15 +34,25 @@ namespace Tactics.Character
         }
 
         [Tooltip("This character's level.")]
-        [SerializeField] private string _level;
+        [SerializeField] private int _level;
         /// <summary>
         /// This character's level
         /// </summary>
-        public string Level 
+        public int Level 
         { 
             get => _level; 
             set => _level = value; 
         }
+
+        [Tooltip("This character's experience.")]
+        [SerializeField] private int _experience;
+        public int Experience
+        {
+            get => _experience;
+            set => _experience = value;
+        }
+
+        [SerializeField] private List<ClassLevels> _classLevel;
 
         [Tooltip("This character's class.")]
         [SerializeField] private ClassAsset _class;
@@ -81,8 +91,9 @@ namespace Tactics.Character
         //Inventory
         //Equipped Items
 
-        #region Character Stat Properties
-        #region Private Variables
+        #region Character Private Variables
+
+        #region Character Stats
         [Tooltip("This character's maximum health. At 0, this character is knocked out")]
         [SerializeField] private int _maxHealth;
         [Tooltip("This character's maximum mana. Resource required to use skills/cast spells.")]
@@ -109,8 +120,30 @@ namespace Tactics.Character
         [SerializeField] private int _jump;
         [Tooltip("This character's spellcasting speed stat. Spellcasting Speed determines how fast a spell is cast.")]
         [SerializeField] private int _spellcastingSpeed;
+        #endregion
+
+        #region Character Elemental Resistances
+        [Tooltip("This character's elemental resistance against fire.")]
+        [SerializeField] private int _fireResistance;
+        [Tooltip("This character's elemental resistance against earth.")]
+        [SerializeField] private int _earthResistance;
+        [Tooltip("This character's elemental resistance against wind.")]
+        [SerializeField] private int _windResistance;
+        [Tooltip("This character's elemental resistance against electric.")]
+        [SerializeField] private int _electricResistance;
+        [Tooltip("This character's elemental resistance against ice.")]
+        [SerializeField] private int _iceResistance;
+        [Tooltip("This character's elemental resistance against light.")]
+        [SerializeField] private int _lightResistance;
+        [Tooltip("This character's elemental resistance against dark.")]
+        [SerializeField] private int _darkResistance;
+        #endregion
 
         #endregion
+
+        #region Character Properties
+
+        #region Character Stats
 
         #region Health & Mana
         /// <summary>
@@ -290,6 +323,67 @@ namespace Tactics.Character
         [SerializeField] private const int _maxModifier = 6;
         #endregion
 
+        #region Character Elemental Resistances
+        /// <summary>
+        /// This character's elemental resistance against fire
+        /// </summary>
+        public int FireResistance
+        {
+            get => _fireResistance;
+            set => _fireResistance = value;
+        }
+        /// <summary>
+        /// This character's elemental resistance against earth
+        /// </summary>
+        public int EarthResistance
+        {
+            get => _earthResistance;
+            set => _earthResistance = value;
+        }
+        /// <summary>
+        /// This character's elemental resistance against wind
+        /// </summary>
+        public int WindResistance
+        {
+            get => _windResistance;
+            set => _windResistance = value;
+        }
+        /// <summary>
+        /// This character's elemental resistance against electric
+        /// </summary>
+        public int ElectricResistance
+        {
+            get => _electricResistance;
+            set => _electricResistance = value;
+        }
+        /// <summary>
+        /// This character's elemental resistance against ice
+        /// </summary>
+        public int IceResistance
+        {
+            get => _iceResistance;
+            set => _iceResistance = value;
+        }
+        /// <summary>
+        /// This character's elemental resistance against light
+        /// </summary>
+        public int LightResistance
+        {
+            get => _lightResistance;
+            set => _lightResistance = value;
+        }
+        /// <summary>
+        /// This character's elemental resistance against dark
+        /// </summary>
+        public int DarkResistance
+        {
+            get => _darkResistance;
+            set => _darkResistance = value;
+        }
+        #endregion
+
+        #endregion
+
         /// <summary>
         /// The Character Stat being modified
         /// </summary>
@@ -311,9 +405,21 @@ namespace Tactics.Character
         }
 
         #region Constructors
-        public CharacterAsset(int health, int maxHealth, int mana, int maxMana, int strength, int magic, int physDef, int magicRes, int dexterity, int crit, int accuracy, int evasion, int movement, int jump, int spellcastingSpeed)
+        public CharacterAsset(int firstName, int lastName, int level, int experience, int health, List<ClassAsset> availableClasses, List<SkillAsset> availableSkills, int maxHealth, int mana, int maxMana, int strength, int magic, int physDef, int magicRes, int dexterity, int crit, int accuracy, int evasion, int movement, int jump, int spellcastingSpeed)
         {
             #region Exceptions
+            //Check for level range exceptions
+            if(Level < 0) throw new ArgumentOutOfRangeException("Level");
+
+            //Check for experience level range exceptions
+            if (Experience < 0) throw new ArgumentOutOfRangeException("Experience");
+
+            //Check for available classes range exceptions
+            if (availableClasses.Count < 0) throw new ArgumentOutOfRangeException("AvailableClasses");
+
+            //Check for available skills range exceptions
+            if (availableSkills.Count < 0) throw new ArgumentOutOfRangeException("AvailableSkills");
+
             //Check for health range exceptions
             if (Health < 0) throw new ArgumentOutOfRangeException("Health");
             if (Health > MaxHealth) throw new ArgumentOutOfRangeException("Health");
@@ -383,6 +489,7 @@ namespace Tactics.Character
         public event EventHandler<DamagedEventArgs> Damaged;
         public event EventHandler<RaisedEventArgs> Raised;
         public event EventHandler<LoweredEventArgs> Lowered;
+        
         #endregion
 
         #region Character Stat Functions
@@ -643,42 +750,40 @@ namespace Tactics.Character
         }
         #endregion
     }
-}
 
-#region EventArgs
-public class RestoredEventArgs : EventArgs
-{
-    public RestoredEventArgs(int amount)
+    public class RestoredEventArgs : EventArgs
     {
-        Amount = amount;
+        public RestoredEventArgs(int amount)
+        {
+            Amount = amount;
+        }
+        public int Amount { get; private set; }
     }
-    public int Amount { get; private set; }
-}
 
-public class DamagedEventArgs : EventArgs
-{
-    public DamagedEventArgs(int amount)
+    public class DamagedEventArgs : EventArgs
     {
-        Amount = amount;
+        public DamagedEventArgs(int amount)
+        {
+            Amount = amount;
+        }
+        public int Amount { get; private set; }
     }
-    public int Amount { get; private set; }
-}
 
-public class RaisedEventArgs : EventArgs
-{
-    public RaisedEventArgs(int amount)
+    public class RaisedEventArgs : EventArgs
     {
-        Amount = amount;
+        public RaisedEventArgs(int amount)
+        {
+            Amount = amount;
+        }
+        public int Amount { get; private set; }
     }
-    public int Amount { get; private set; }
-}
 
-public class LoweredEventArgs : EventArgs
-{
-    public LoweredEventArgs(int amount)
+    public class LoweredEventArgs : EventArgs
     {
-        Amount = amount;
+        public LoweredEventArgs(int amount)
+        {
+            Amount = amount;
+        }
+        public int Amount { get; private set; }
     }
-    public int Amount { get; private set; }
 }
-#endregion
