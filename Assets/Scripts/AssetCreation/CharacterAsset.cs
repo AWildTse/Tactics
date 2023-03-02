@@ -93,7 +93,7 @@ namespace Tactics.Character
         }
         #endregion
 
-        #region Character Stat Variables and Properties
+        #region Character Stat 
 
         #region Health & Mana
         /// <summary>
@@ -325,7 +325,7 @@ namespace Tactics.Character
 
         #endregion
 
-        #region Character Elemental Resistances Variables and Properties
+        #region Character Elemental Resistances
         [Tooltip("This character's elemental resistance against fire.")]
         [SerializeField] private int _fireResistance;
 
@@ -412,7 +412,9 @@ namespace Tactics.Character
         #endregion
 
         #region Character Equipment
-        [Tooltip("This character's primary weapon")]
+
+        #region Character Weapons
+        [Tooltip("This character's primary weapon.")]
         [SerializeField] private WeaponAsset _primaryWeapon;
 
         /// <summary>
@@ -423,7 +425,35 @@ namespace Tactics.Character
             get => _primaryWeapon;
             set => _primaryWeapon = value;
         }
+
+        [Tooltip("This character's secondary  weapon.")]
+        [SerializeField] private WeaponAsset _secondaryWeapon;
+
+        /// <summary>
+        /// This character's secondary weapon
+        /// </summary>
+        public WeaponAsset SecondaryWeapon
+        {
+            get => _secondaryWeapon;
+            set => _secondaryWeapon = value;
+        }
+
+        [Tooltip("The list of weapons this character can use.")]
+        private List<WeaponAsset> _listOfCharacterUsableWeapons;
+
+        /// <summary>
+        /// The list of weapons this characther can use
+        /// </summary>
+        public List<WeaponAsset> ListOfCharacterUsableWeapons
+        {
+            get => _listOfCharacterUsableWeapons;
+            set => _listOfCharacterUsableWeapons = value;
+        }
         #endregion
+
+        #endregion
+
+
 
         /// <summary>
         /// This is how much a stat can be modified with abilities/skills during battle

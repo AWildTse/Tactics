@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tactics.Interfaces
 { 
-    public class IItem : ScriptableObject
+    public interface IItem
     {
     
     }

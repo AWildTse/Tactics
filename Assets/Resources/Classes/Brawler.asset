@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d125ef3fe0cd64db844470299b93f4, type: 3}
   m_Name: Brawler
   m_EditorClassIdentifier: 
-  _className: 
+  _className: Brawler
   _ability: {fileID: 0}
   _listOfClassSkills: []
   _healthModifier: 0
   _manaModifier: 0
-  _strengthModifier: 0
+  _strengthModifier: 1
   _magicModifier: 0
   _physicalDefenseModifier: 0
   _magicResistanceModifier: 0

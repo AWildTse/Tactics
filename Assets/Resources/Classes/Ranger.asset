@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d125ef3fe0cd64db844470299b93f4, type: 3}
   m_Name: Ranger
   m_EditorClassIdentifier: 
-  _className: 
+  _className: Ranger
   _ability: {fileID: 0}
   _listOfClassSkills: []
   _healthModifier: 0
@@ -21,7 +21,7 @@ MonoBehaviour:
   _magicModifier: 0
   _physicalDefenseModifier: 0
   _magicResistanceModifier: 0
-  _dexterityModifier: 0
+  _dexterityModifier: 1
   _criticalChanceModifier: 0
   _accuracyModifier: 0
   _evasionModifier: 0
