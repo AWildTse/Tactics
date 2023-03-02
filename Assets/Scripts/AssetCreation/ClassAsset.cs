@@ -18,12 +18,6 @@ namespace Tactics.Class
         [Tooltip("This class' ability.")]
         [SerializeField] private AbilityAsset _ability;
 
-        [Tooltip("This class' level.")]
-        [SerializeField] private int _classLevel;
-
-        [Tooltip("This amount of experience in this class' level.")]
-        [SerializeField] private int _classExperience;
-
         [Tooltip("This class' list of skills.")]
         [SerializeField] private List<SkillAsset> _listOfClassSkills;
         #endregion
