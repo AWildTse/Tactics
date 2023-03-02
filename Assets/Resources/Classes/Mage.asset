@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Mage
   m_EditorClassIdentifier: 
   _className: Mage
-  _ability: {fileID: 11400000, guid: e65f2ccebff486c41afe771e68033a23, type: 2}
-  _listOfClassSkills:
-  - {fileID: 11400000, guid: 05ed74b270b49b64db30da70fdeda6ef, type: 2}
+  _ability: {fileID: 0}
+  _classLevel: 0
+  _classExperience: 0
+  _listOfClassSkills: []
   _healthModifier: 0
   _manaModifier: 0
   _strengthModifier: 0

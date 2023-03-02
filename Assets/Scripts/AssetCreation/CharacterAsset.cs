@@ -139,6 +139,9 @@ namespace Tactics.Character
         [SerializeField] private int _darkResistance;
         #endregion
 
+        #region Character Equipment
+        #endregion
+
         #endregion
 
         #region Character Properties

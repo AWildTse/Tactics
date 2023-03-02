@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _className: Rookie
   _ability: {fileID: 0}
-  _listOfClassSkills:
-  - {fileID: 11400000, guid: 06ca3a7dc841b1846a74d07efb73333e, type: 2}
+  _classLevel: 0
+  _classExperience: 0
+  _listOfClassSkills: []
   _healthModifier: 0
   _manaModifier: 0
   _strengthModifier: 0

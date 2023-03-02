@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tactics.Weapon
 { 
-    [CreateAssetMenu(fileName = "New Weapon", menuName = "ScriptableObjects/Weapons")]
+    [CreateAssetMenu(fileName = "New Weapon", menuName = "ScriptableObjects/Equipment/Weapons")]
     public class WeaponAsset : ScriptableObject
     {
 
