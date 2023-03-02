@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5215421e7a8b55f4bb2dd0c9e237bfbe, type: 3}
   m_Name: New Character
   m_EditorClassIdentifier: 
-  _firstName: 
-  _lastName: 
-  _level: 0
+  _firstName: First
+  _lastName: Last
+  _level: 1
   _experience: 0
   _classLevel: []
-  _class: {fileID: 0}
+  _class: {fileID: 11400000, guid: 7348881e753da47448e7686724269728, type: 2}
   _availableClasses: []
   _availableSkills: []
   _maxHealth: 0
