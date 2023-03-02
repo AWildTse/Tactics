@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Tactics.Ability;
 using Tactics.Class;
 using Tactics.Skills;
+using Tactics.Weapon;
 
 namespace Tactics.Character
 {
@@ -51,9 +52,9 @@ namespace Tactics.Character
             get => _experience;
             set => _experience = value;
         }
+        #endregion
 
-        [SerializeField] private List<ClassLevels> _classLevel;
-
+        #region Character Class
         [Tooltip("This character's class.")]
         [SerializeField] private ClassAsset _class;
         /// <summary>
@@ -76,6 +77,10 @@ namespace Tactics.Character
             set => _availableClasses = value;
         }
 
+        [SerializeField] private List<ClassLevels> _classLevel;
+        #endregion
+
+        #region Character Skills
         [Tooltip("This character's available skills")]
         [SerializeField] private List<SkillAsset> _availableSkills;
         /// <summary>
@@ -88,71 +93,16 @@ namespace Tactics.Character
         }
         #endregion
 
-        //Inventory
-        //Equipped Items
-
-        #region Character Private Variables
-
-        #region Character Stats
-        [Tooltip("This character's maximum health. At 0, this character is knocked out")]
-        [SerializeField] private int _maxHealth;
-        [Tooltip("This character's maximum mana. Resource required to use skills/cast spells.")]
-        [SerializeField] private int _maxMana;
-        [Tooltip("This character's strength stat. Strength determines how much physical damage the character does.")]
-        [SerializeField] private int _strength;
-        [Tooltip("This character's magic stat. Magic determines how much magical damage the character does.")]
-        [SerializeField] private int _magic;
-        [Tooltip("This character's physical defense stat. Physical Resistance determines how much physical damage is mitigated.")]
-        [SerializeField] private int _physicalDefense;
-        [Tooltip("This character's magical resistance stat. Magical Resistance determines how much magical damage is mitigated.")]
-        [SerializeField] private int _magicResistance;
-        [Tooltip("This character's dexterity stat. Dexterity determines a character's speed, accuracy, and evasion")]
-        [SerializeField] private int _dexterity;
-        [Tooltip("This character's critical chance stat. Critical Chance determines the chance of the player's physical or magical attack dealing double damage.")]
-        [SerializeField] private int _criticalChance;
-        [Tooltip("This character's accuracy stat. Accuracy determines the chance of landing a blow.")]
-        [SerializeField] private int _accuracy;
-        [Tooltip("This character's evasion stat. Evasion determines the chance of dodging.")]
-        [SerializeField] private int _evasion;
-        [Tooltip("This character's movement stat. Movement determines how many places a character can move.")]
-        [SerializeField] private int _movement;
-        [Tooltip("This character's jump stat. Jump determines how high a character can jump to reach a new place. (Requires one Movement)")]
-        [SerializeField] private int _jump;
-        [Tooltip("This character's spellcasting speed stat. Spellcasting Speed determines how fast a spell is cast.")]
-        [SerializeField] private int _spellcastingSpeed;
-        #endregion
-
-        #region Character Elemental Resistances
-        [Tooltip("This character's elemental resistance against fire.")]
-        [SerializeField] private int _fireResistance;
-        [Tooltip("This character's elemental resistance against earth.")]
-        [SerializeField] private int _earthResistance;
-        [Tooltip("This character's elemental resistance against wind.")]
-        [SerializeField] private int _windResistance;
-        [Tooltip("This character's elemental resistance against electric.")]
-        [SerializeField] private int _electricResistance;
-        [Tooltip("This character's elemental resistance against ice.")]
-        [SerializeField] private int _iceResistance;
-        [Tooltip("This character's elemental resistance against light.")]
-        [SerializeField] private int _lightResistance;
-        [Tooltip("This character's elemental resistance against dark.")]
-        [SerializeField] private int _darkResistance;
-        #endregion
-
-        #region Character Equipment
-        #endregion
-
-        #endregion
-
-        #region Character Properties
-
-        #region Character Stats
+        #region Character Stat Variables and Properties
 
         #region Health & Mana
         /// <summary>
         /// A character's current Health. At 0, this character is knocked out
         /// </summary>
         public int Health { get; set; }
+        [Tooltip("This character's maximum health. At 0, this character is knocked out")]
+        [SerializeField] private int _maxHealth;
+
         /// <summary>
         /// The maximum Health a character can have
         /// </summary>
@@ -161,10 +111,14 @@ namespace Tactics.Character
             get => _maxHealth;
             set => _maxHealth = value;
         }
+        
         /// <summary>
         /// A character's current Mana. Resource required to use skills/cast spells.
         /// </summary>
         public int Mana { get; set; }
+        [Tooltip("This character's maximum mana. Resource required to use skills/cast spells.")]
+        [SerializeField] private int _maxMana;
+
         /// <summary>
         /// The maximum Mana a character can have
         /// </summary>
@@ -176,6 +130,9 @@ namespace Tactics.Character
         #endregion
 
         #region Strength & Magic
+        [Tooltip("This character's strength stat. Strength determines how much physical damage the character does.")]
+        [SerializeField] private int _strength;
+        
         /// <summary>
         /// Strength determines how much physical damage the character does.
         /// </summary>
@@ -184,10 +141,15 @@ namespace Tactics.Character
             get => _strength;
             set => _strength = value;
         }
+        
         /// <summary>
         /// This is the Strength + any stat modifiers
         /// </summary>
         public int CurrStr { get; set; }
+        
+        [Tooltip("This character's magic stat. Magic determines how much magical damage the character does.")]
+        [SerializeField] private int _magic;
+        
         /// <summary>
         /// Magic determines how much magical damage the character does
         /// </summary>
@@ -196,6 +158,7 @@ namespace Tactics.Character
             get => _magic;
             set => _magic = value;
         }
+        
         /// <summary>
         /// This is the Magic + any stat modifiers
         /// </summary>
@@ -203,6 +166,9 @@ namespace Tactics.Character
         #endregion
 
         #region Resistances
+        [Tooltip("This character's physical defense stat. Physical Resistance determines how much physical damage is mitigated.")]
+        [SerializeField] private int _physicalDefense;
+        
         /// <summary>
         /// Physical Defense determines how much physical damage is mitigated
         /// </summary>
@@ -211,10 +177,15 @@ namespace Tactics.Character
             get => _physicalDefense;
             set => _physicalDefense = value;
         }
+        
         /// <summary>
         /// This is the Physical Defense + any stat modifiers
         /// </summary>
         public int CurrPhysDef { get; set; }
+        
+        [Tooltip("This character's magical resistance stat. Magical Resistance determines how much magical damage is mitigated.")]
+        [SerializeField] private int _magicResistance;
+        
         /// <summary>
         /// Magical Resistance determines how much magical damage is mitigated
         /// </summary>
@@ -223,6 +194,7 @@ namespace Tactics.Character
             get => _magicResistance;
             set => _magicResistance = value;
         }
+        
         /// <summary>
         /// This is the Magical Resistance + any stat modifiers
         /// </summary>
@@ -230,6 +202,9 @@ namespace Tactics.Character
         #endregion
 
         #region Movements & Turns
+        [Tooltip("This character's movement stat. Movement determines how many places a character can move.")]
+        [SerializeField] private int _movement;
+        
         /// <summary>
         /// Movement determines how many places a character can move
         /// </summary>
@@ -238,10 +213,15 @@ namespace Tactics.Character
             get => _movement;
             set => _movement = value;
         }
+        
         /// <summary>
         /// This is the Movement + any stat modifiers
         /// </summary>
         public int CurrMovement { get; set; }
+        
+        [Tooltip("This character's jump stat. Jump determines how high a character can jump to reach a new place. (Requires one Movement)")]
+        [SerializeField] private int _jump;
+        
         /// <summary>
         /// Jump determines how high a character can jump to reach a new place. (Requires one Movement)
         /// </summary>
@@ -250,10 +230,15 @@ namespace Tactics.Character
             get => _jump;
             set => _jump = value;
         }
+        
         /// <summary>
         /// This is the Jump + any stat modifiers
         /// </summary>
         public int CurrJump { get; set; }
+        
+        [Tooltip("This character's dexterity stat. Dexterity determines a character's speed, accuracy, and evasion")]
+        [SerializeField] private int _dexterity;
+        
         /// <summary>
         /// Dex determines a character's speed, accuracy, and evasion
         /// </summary>
@@ -262,6 +247,7 @@ namespace Tactics.Character
             get => _dexterity;
             set => _dexterity = value;
         }
+        
         /// <summary>
         /// This is the Dexterity + any stat modifiers
         /// </summary>
@@ -269,6 +255,9 @@ namespace Tactics.Character
         #endregion
 
         #region Misc
+        [Tooltip("This character's critical chance stat. Critical Chance determines the chance of the player's physical or magical attack dealing double damage.")]
+        [SerializeField] private int _criticalChance;
+        
         /// <summary>
         /// Critical Chance determines the chance of the player's physical or magical attack dealing double damage
         /// </summary>
@@ -277,10 +266,15 @@ namespace Tactics.Character
             get => _criticalChance;
             set => _criticalChance = value;
         }
+        
         /// <summary>
         /// This is the Critical Chance + any stat modifiers
         /// </summary>
         public int CurrCrit { get; set; }
+        
+        [Tooltip("This character's accuracy stat. Accuracy determines the chance of landing a blow.")]
+        [SerializeField] private int _accuracy;
+        
         /// <summary>
         /// Accuracy determines the chance of landing a blow
         /// </summary>
@@ -289,10 +283,14 @@ namespace Tactics.Character
             get => _accuracy;
             set => _accuracy = value;
         }
+        
         /// <summary>
         /// This is the Accuracy + any stat modifiers
         /// </summary>
         public int CurrAccuracy { get; set; }
+        [Tooltip("This character's evasion stat. Evasion determines the chance of dodging.")]
+        [SerializeField] private int _evasion;
+        
         /// <summary>
         /// Evasion determines the chance of dodging
         /// </summary>
@@ -306,6 +304,10 @@ namespace Tactics.Character
         /// This is the Evasion + any stat modifiers
         /// </summary>
         public int CurrEvasion { get; set; }
+        
+        [Tooltip("This character's spellcasting speed stat. Spellcasting Speed determines how fast a spell is cast.")]
+        [SerializeField] private int _spellcastingSpeed;
+        
         /// <summary>
         /// Spellcasting Speed determines how fast a spell is cast
         /// </summary>
@@ -314,19 +316,19 @@ namespace Tactics.Character
             get => _spellcastingSpeed;
             set => _spellcastingSpeed = value;
         }
+        
         /// <summary>
         /// This is the Spellcasting Speed + any stat modifiers
         /// </summary>
         public int CurrSpellcSpd { get; set; }
         #endregion
 
-        /// <summary>
-        /// This is how much a stat can be modified with abilities/skills during battle
-        /// </summary>
-        [SerializeField] private const int _maxModifier = 6;
         #endregion
 
-        #region Character Elemental Resistances
+        #region Character Elemental Resistances Variables and Properties
+        [Tooltip("This character's elemental resistance against fire.")]
+        [SerializeField] private int _fireResistance;
+
         /// <summary>
         /// This character's elemental resistance against fire
         /// </summary>
@@ -335,6 +337,10 @@ namespace Tactics.Character
             get => _fireResistance;
             set => _fireResistance = value;
         }
+
+        [Tooltip("This character's elemental resistance against earth.")]
+        [SerializeField] private int _earthResistance;
+
         /// <summary>
         /// This character's elemental resistance against earth
         /// </summary>
@@ -343,6 +349,10 @@ namespace Tactics.Character
             get => _earthResistance;
             set => _earthResistance = value;
         }
+
+        [Tooltip("This character's elemental resistance against wind.")]
+        [SerializeField] private int _windResistance;
+
         /// <summary>
         /// This character's elemental resistance against wind
         /// </summary>
@@ -351,6 +361,10 @@ namespace Tactics.Character
             get => _windResistance;
             set => _windResistance = value;
         }
+
+        [Tooltip("This character's elemental resistance against electric.")]
+        [SerializeField] private int _electricResistance;
+
         /// <summary>
         /// This character's elemental resistance against electric
         /// </summary>
@@ -359,6 +373,10 @@ namespace Tactics.Character
             get => _electricResistance;
             set => _electricResistance = value;
         }
+
+        [Tooltip("This character's elemental resistance against ice.")]
+        [SerializeField] private int _iceResistance;
+
         /// <summary>
         /// This character's elemental resistance against ice
         /// </summary>
@@ -367,6 +385,10 @@ namespace Tactics.Character
             get => _iceResistance;
             set => _iceResistance = value;
         }
+
+        [Tooltip("This character's elemental resistance against light.")]
+        [SerializeField] private int _lightResistance;
+
         /// <summary>
         /// This character's elemental resistance against light
         /// </summary>
@@ -375,6 +397,10 @@ namespace Tactics.Character
             get => _lightResistance;
             set => _lightResistance = value;
         }
+
+        [Tooltip("This character's elemental resistance against dark.")]
+        [SerializeField] private int _darkResistance;
+
         /// <summary>
         /// This character's elemental resistance against dark
         /// </summary>
@@ -385,7 +411,24 @@ namespace Tactics.Character
         }
         #endregion
 
+        #region Character Equipment
+        [Tooltip("This character's primary weapon")]
+        [SerializeField] private WeaponAsset _primaryWeapon;
+
+        /// <summary>
+        /// This character's primary weapon
+        /// </summary>
+        public WeaponAsset PrimaryWeapon
+        {
+            get => _primaryWeapon;
+            set => _primaryWeapon = value;
+        }
         #endregion
+
+        /// <summary>
+        /// This is how much a stat can be modified with abilities/skills during battle
+        /// </summary>
+        [SerializeField] private const int _maxModifier = 6;
 
         /// <summary>
         /// The Character Stat being modified

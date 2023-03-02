@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tactics.Interfaces;
+
 namespace Tactics.Weapon
 { 
     [CreateAssetMenu(fileName = "New Weapon", menuName = "ScriptableObjects/Equipment/Weapons")]
